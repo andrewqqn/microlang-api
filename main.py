@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -12,6 +13,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class ChatRequest(BaseModel):
+    message: str
+
 @app.post("/chat")
-def chat():
-    return {"message": "hello world"}
+def chat(request: ChatRequest):
+    # For now, just echo the message back
+    return {"message": f"You said: {request.message}"}
